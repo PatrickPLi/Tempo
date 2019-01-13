@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "690100961670",
+    "firebase_url": "https://starterhacks-1546810230756.firebaseio.com",
+    "project_id": "starterhacks-1546810230756",
+    "storage_bucket": "starterhacks-1546810230756.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690100961670:android:5314162dc3f63542",
+        "android_client_info": {
+          "package_name": "io.chirp.connectdemoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690100961670-4f8ccpjt1kga2vcpvmgtip3uau3t9tg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDynH-fu5O0FrJxk-LKpDLmLmALg7bdwe4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
