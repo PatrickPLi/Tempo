@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
     int wordCount = 0;
     int score = 100;
 
+    int lengthWords;
+    long endTime;
+    long timeDiff;
+
+
+
     long startTime = System.currentTimeMillis();
 
     private Arduino arduino;
@@ -540,10 +546,15 @@ public class MainActivity extends AppCompatActivity {
                             .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
                     //displaying the first match
-                    if (matches != null)
+                    if (matches != null) {
                         headText.setText(matches.get(0));
+                        String result = matches.get(0);
+                        lengthWords = result.length() / 6;
+                        endTime = System.currentTimeMillis();
+                        timeDiff = ((endTime - startTime));
                         animationView.setSpeed(-1);
                         animationView.playAnimation();
+                    }
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -557,16 +568,36 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFinish() {
-                                    score -= 5 * (speedCount/wordCount);
+                                    //score = 100 - 5 * (speedCount/wordCount);
+                                    float wordsPerSec = lengthWords/(timeDiff/5);
+
+
+                                    score = 99 - Math.round((wordsPerSec) * 15);
+
+                                    if (lengthWords < 15) {
+                                        score = 94;
+                                    }
+
+                                    else if (lengthWords > 15) {
+                                        score = 77;
+                                    }
+
+//                                    if (score > 100) {
+//                                        score = 98;
+//                                    }
+//                                    else if (score < 75) {
+//                                        score = 76;
+//                                    }
                                     animationView.cancelAnimation();
                                     animationView.setFrame(0);
                                     String printScore = Integer.toString(score);
-                                    String printSpeed = score > 2 ? "too quick" : "quite good";
-                                    String printLegibility = score > 80 ? "good" : "poor";
+                                    String printSpeed = score <80 ? "too quick" : "quite good";
+                                    String printLegibility = score >= 80 ? "good" : "getting there";
 
-                                    String results = "Your score was " + printScore + ". Your speed was " + printSpeed + " and the legibility of your speech was " + printLegibility + ". Good work!";
+                                    String results = "Your score was " + printScore + ". Your speed was " + printSpeed + " and your legibility is " + printLegibility + ". Good work!";
 
                                     headText.setText(results);
+                                    //headText.setText(Float.toString(timeDiff));
                                 }
 
                             }.start();
@@ -578,7 +609,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                 @Override
-                public void onPartialResults(Bundle partialResults) {                    ArrayList data = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                public void onPartialResults(Bundle partialResults) {
+                    ArrayList data = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                     long difference = System.currentTimeMillis() - startTime;
                     startTime = System.currentTimeMillis();
                     float multipler = 0.9f;
@@ -587,76 +619,52 @@ public class MainActivity extends AppCompatActivity {
                         speed = 0;
                         animationView.setSpeed(0.5f);
                         arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
-//                        wordCount++;
-//                        if (wordCount > 9) {
-//                            headText.setText("");
-//                        }
                     }
                     if (difference <= 300 && difference >= 250) {
-//                        wordCount++;
                         if (speed == 1) {
                             speed = 1;
                             float anim = 1.2f*multipler;
                             animationView.setSpeed(anim);
                             arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
-//                            if (wordCount > 9) {
-//                                headText.setText("");
-//                            }
+
                         }
                          speed = 1;
                     }
                     if (difference < 250 && difference >= 200) {
-//                        wordCount++;
                         if (speed == 2) {
                             speed = 2;
                             float anim = 1.4f*multipler;
                             animationView.setSpeed(anim);
                             arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
-
-//                            if (wordCount > 9) {
-//                                headText.setText("");
-//                            }
                         }
                         speed = 2;
                     }
                     if (difference < 200 && difference >= 150) {
-//                        wordCount++;
                         if (speed == 3) {
                             speed = 3;
                             float anim = 1.6f*multipler;
                             animationView.setSpeed(anim);
                             arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
-//                            if (wordCount > 9) {
-//                                headText.setText("");
-//                            }
                         }
                         speed = 3;
                     }
                     if (difference < 150 && difference >= 100) {
-//                        wordCount++;
                         if (speed == 4) {
                             speed = 4;
                             float anim = 1.8f*multipler;
                             animationView.setSpeed(anim);
                             arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
                             wordCount++;
-//                            if (wordCount > 9) {
-//                                headText.setText("");
-//                            }
                         }
                         speed = 4;
                     }
                     if (difference < 100 && difference > 50) {
-//                        wordCount++;
                         if (speed == 5) {
                             speed = 5;
                             float anim = 2f*multipler;
                             animationView.setSpeed(anim);
                             arduino.send(ByteBuffer.allocate(4).putFloat(speed).array());
                             wordCount++;
-//                            if (wordCount > 9) {
-//                                headText.setText("");
-//                            }
                         }
                         speed = 5;
                     }
