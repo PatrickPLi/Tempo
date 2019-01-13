@@ -79,8 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
     String email = "foo";
 
+    int speedCount = 0;
     int speed = 5;
     int wordCount = 0;
+    int score = 100;
 
     long startTime = System.currentTimeMillis();
 
@@ -540,6 +542,8 @@ public class MainActivity extends AppCompatActivity {
                     //displaying the first match
                     if (matches != null)
                         headText.setText(matches.get(0));
+                        animationView.setSpeed(-1);
+                        animationView.playAnimation();
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -553,8 +557,16 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFinish() {
+                                    score -= 5 * (speedCount/wordCount);
                                     animationView.cancelAnimation();
                                     animationView.setFrame(0);
+                                    String printScore = Integer.toString(score);
+                                    String printSpeed = score > 2 ? "too quick" : "quite good";
+                                    String printLegibility = score > 80 ? "good" : "poor";
+
+                                    String results = "Your score was " + printScore + ". Your speed was " + printSpeed + " and the legibility of your speech was " + printLegibility + ". Good work!";
+
+                                    headText.setText(results);
                                 }
 
                             }.start();
@@ -650,9 +662,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     wordCount++;
-//                    if (wordCount > 9) {
-//                        headText.setText("");
-//                    }
+                    speedCount += speed;
+
                     headText.setText("");
 
                     String word = (String) data.get(data.size() - 1);
