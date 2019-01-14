@@ -1,11 +1,18 @@
-# Chirp SDK for Android
+# Tempo
 
-The Chirp SDK makes it quick and easy to integrate Chirp connectivity into your Android apps.
+Tempo is an Android application designed to help deaf and hard-of-hearing individuals overcome speech impediments. It analyzes speech using the Google Speedch-to-Text API and provides the user with real-time feedback to encourage corrective action. Tempo also calculates a score out of 100 for the user based on multiple variables.
 
-* For step-by-step instructions, follow the [Chirp Getting Started Guide for Android](https://developers.chirp.io/docs/getting-started/android).
-* For an overview of Chirp technology, see our [Chirp Overview](https://developers.chirp.io/docs/).
-* To get in touch directly, visit [Chirp Developer Support](https://developers.chirp.io/support).
+## Usage
+Open the project folder in Android studio. Then perform a "Gradle Sync."
 
-***
+```bash
+./gradlew build
+```
+For immediate testing or debugging, build and install on a device or emulator using
 
-This software is copyright © 2011-2018, Asio Ltd. All rights reserved.
+
+```bash
+./gradlew installDebug
+```
+
+Upon launching the app, tap the "play" button and begin speaking.
